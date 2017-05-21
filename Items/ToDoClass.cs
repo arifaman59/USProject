@@ -238,29 +238,136 @@ namespace Items
         }
 
 
-        public bool ValidateElement(string locator, string locatorText)
+        [Test]
+        public void ClearAllCompletedItems()
         {
-            if (IsElementPresent(locator))
+            try
             {
-                test.Log(LogStatus.Info, "To do list has an element");
-                if (VerifyElementText(locator, locatorText))
+                test = report.StartTest("ClearAllCompletedItems", "Clearing all completed items by clicking the link");
+                OpenBrowser("Chrome");
+                NavigateTo("http://todomvc.com");
+                ClickAt("AngularJS_link");
+                int i = 0;
+
+                while (i < 4)
                 {
-                    return true;
+                    Type("ToDoBox", "Aman" + i);
+                    PressEnter("ToDoBox");
+                    if (ValidateElement("Element1", "Aman" + i))
+                    {
+                        test.Log(LogStatus.Info, "Element has been added successfully");
+                        TakeScreenShotAttachToReport();
+                    }
+
+                    i++;
                 }
-                else
+
+                test.Log(LogStatus.Info, "All the elements have been added in the list successfully");
+
+                ClickAt("mainCheckbox");
+
+                ClickAt("completedTab");
+
+                int j = 0;
+
+                while (j < 4)
                 {
-                    return false;
+                    if (IsElementPresent("Element" + (j + 1)))
+                    {
+                        TakeScreenShotAttachToReport();
+                        test.Log(LogStatus.Info, "Status of the element has been changed to COMPLETED");
+
+                    }
+
+                    else
+                    {
+                        ReportFail("Element status not changed to COMPLETED");
+                        Assert.Fail("Element status not changed to COMPLETED");
+                    }
+
+                    j++;
                 }
+
+                ClickAt("clearCompletedLink");
+
+                int k = 0;
+                while (k < 4)
+                {
+                    if (IsElementPresent("Element" + (k + 1)))
+                    {
+                        ReportFail("Element status not changed to COMPLETED");
+                        Assert.Fail("Element status not changed to COMPLETED");
+
+                    }
+
+                   k++;
+                }
+
+                test.Log(LogStatus.Info, "All items have been removed from the list");
+                ReportPass("Test case Execution completed successfully");
+
             }
-            else
+            catch (Exception e)
             {
-                return false;
+                ReportFail("Error while executing the test case : " + e.Message);
+                Assert.Fail(e.Message);
             }
         }
 
 
 
+        [Test]
+        public void ClearSingleItem()
+        {
+            try
+            {
+                test = report.StartTest("ClearSingleItem", "Clearing a single item from the list");
+                OpenBrowser("Chrome");
+                NavigateTo("http://todomvc.com");
+                ClickAt("AngularJS_link");
+                int i = 0;
 
+                while (i < 4)
+                {
+                    Type("ToDoBox", "Aman" + i);
+                    PressEnter("ToDoBox");
+                    if (ValidateElement("Element" + (i+1), "Aman" + i))
+                    {
+                        test.Log(LogStatus.Info, "Element has been added successfully");
+                        TakeScreenShotAttachToReport();
+                    }
+
+                    i++;
+                }
+
+                test.Log(LogStatus.Info, "All the elements have been added in the list successfully");
+
+                DeletSingleItem("Element1", "deleteFirstItem");
+                //TakeScreenShotAttachToReport();
+
+                ////Verify the first item is deleted and 2nd item has been moved to item1
+
+                //if (!ValidateElement("Element1", "Aman" + 0))
+                //{
+                //    ReportPass("Element has been removed from the list");
+                //}
+                //else
+                //{
+                //    ReportFail("Element has not been deleted from the list");
+                //    Assert.Fail("Element has not been deleted from the list");
+                //}
+             
+
+            }
+            catch (Exception e)
+            {
+                ReportFail("Error while executing the test case : " + e.Message);
+                Assert.Fail(e.Message);
+            }
+        }
+
+        
+               
 
 
         [TearDown]

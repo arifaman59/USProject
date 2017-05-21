@@ -214,5 +214,32 @@ namespace Items
             driver.Quit();
         }
 
+        public bool ValidateElement(string locator, string locatorText)
+        {
+            if (IsElementPresent(locator))
+            {
+                test.Log(LogStatus.Info, "To do list has an element");
+                if (VerifyElementText(locator, locatorText))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void DeletSingleItem(string rowLocator, string deleteLocator)
+        {
+            Actions act = new Actions(driver);
+            act.MoveToElement(GetElement(rowLocator)).Build().Perform();
+            ClickAt(deleteLocator);
+        }
+
     }
 }
