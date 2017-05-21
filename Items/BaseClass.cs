@@ -57,7 +57,7 @@ namespace Items
 
             driver.Manage().Window.Maximize();
             test.Log(LogStatus.Info, "Browser maximized");
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             test.Log(LogStatus.Info, "Browser configured successfully");
 
         }
