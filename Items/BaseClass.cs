@@ -57,7 +57,7 @@ namespace Items
 
             driver.Manage().Window.Maximize();
             test.Log(LogStatus.Info, "Browser maximized");
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
             test.Log(LogStatus.Info, "Browser configured successfully");
 
         }
@@ -98,6 +98,11 @@ namespace Items
             test.Log(LogStatus.Info, "Double-clicked successfully");
         }
 
+        public void ClearText(string locator)
+        {
+            GetElement(locator).SendKeys(Keys.Backspace);
+            test.Log(LogStatus.Info, "Existing text has been cleared");
+        }
         
 
 
